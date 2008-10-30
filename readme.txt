@@ -19,8 +19,9 @@ b.write_report
 todo
 
 * error handling for cases such as:
+-- git is not installed
+-- wrong version of git
 -- not in repo root when run
 -- there is no public folder
 
 * links to github for listed commits
-
