@@ -29,7 +29,13 @@ describe Babygitter do
     it 'should generate a report with repo codes' do
       r = Babygitter::ReportGenerator.new
       code = `git describe --always`
-      r.templated_report.=~(Regexp.new(code)).should_not be_nil
+      r.templated_report.=~(/#{code}/).should_not be_nil
+    end
+    
+    it 'should put a timestamp in the report' do
+      r = Babygitter::ReportGenerator.new
+      time_without_seconds = Time.now.to_s[/\d+:\d+/]
+      r.templated_report.=~(/#{time_without_seconds}/).should_not be_nil
     end
     
     it 'should write a file' do

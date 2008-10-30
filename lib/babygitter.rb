@@ -38,9 +38,13 @@ module Babygitter
       </div>
       <div id="main_repo">
       the main repository on this server is at version <strong>#{@main_repo_code}</strong>.<br><br>
+      the last time it was deployed was at #{Time.now}
       </div>
       <div id="submodules">
       #{@submodule_list == '' ? '' : "here are the version codes for the submodules in use:<br><br>" + @submodule_list.gsub("\n", '<br>')}
+      </div>
+      <div id="babygitter">
+      to investigate or add to the code that generated this report, visit <a href="http://github.com/schwabsauce/babygitter">http://github.com/schwabsauce/babygitter</a>.
       </div>
       </body>
       </html>
