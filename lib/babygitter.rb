@@ -1,26 +1,53 @@
+require 'grit'
 module Babygitter
   class RepoVersionTracker
+    
+    def initialize(repo)
+      @repo = Grit::Repo.new repo.path
+    end
+    
     def submodule_codes
       `git submodule`
     end
     
     def main_repo_code
-      `git describe --always`
+      @repo.commits.first.id_abbrev
+    end
+    
+    def committers
+      @repo.commits.map { |c| c.author }.map { |a| a.name }.uniq
+    end
+    
+    def commit_range_beginning
+      @repo.commits.last.authored_date
     end
   end
   
   class ReportGenerator
-    attr_accessor :submodule_list, :main_repo_code
+    attr_accessor :submodule_list, :main_repo_code, :committers, :commit_range_beginning
     
-    def initialize
-      self.submodule_list = RepoVersionTracker.new.submodule_codes
-      self.main_repo_code = RepoVersionTracker.new.main_repo_code
+    def initialize(repo_path = '.')
+      repo = Dir.open repo_path
+      repo_info = RepoVersionTracker.new(repo)
+      self.submodule_list = repo_info.submodule_codes
+      self.main_repo_code = repo_info.main_repo_code
+      self.committers = repo_info.committers
+      self.commit_range_beginning = repo_info.commit_range_beginning
     end
     
     def write_report
       r = File.open('public/babygitter_report.html', 'w+')
       r.write templated_report
       r.close
+    end
+    
+    def committer_list
+      case @committers.length
+      when 1
+        'Only ' + @committers.first + ' has'
+      else
+        @committers[0..-2].join(', ') + ' and ' + @committers.last + ' have'
+      end
     end
     
     def templated_report
@@ -39,6 +66,9 @@ module Babygitter
       <div id="main_repo">
       the main repository on this server is at version <strong>#{@main_repo_code}</strong>.<br><br>
       the last time it was deployed was at #{Time.now}
+      </div>
+      <div id="committers">
+      #{committer_list} committed to this project since #{@commit_range_beginning}.
       </div>
       <div id="submodules">
       #{@submodule_list == '' ? '' : "here are the version codes for the submodules in use:<br><br>" + @submodule_list.gsub("\n", '<br>')}
