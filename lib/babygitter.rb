@@ -29,16 +29,21 @@ module Babygitter
     def initialize(repo_path = '.')
       repo = Dir.open repo_path
       repo_info = RepoVersionTracker.new(repo)
-      self.submodule_list = repo_info.submodule_codes
       self.main_repo_code = repo_info.main_repo_code
       self.committers = repo_info.committers
       self.commit_range_beginning = repo_info.commit_range_beginning
+
+      # submodule list not supported when called from an arbitrary dir
+      unless repo_path == '.'
+        self.submodule_list = repo_info.submodule_codes
+      end
     end
     
     def write_report
       r = File.open('public/babygitter_report.html', 'w+')
       r.write templated_report
       r.close
+      'report written to public/babygitter_report.html'
     end
     
     def committer_list
