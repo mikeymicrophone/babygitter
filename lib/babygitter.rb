@@ -76,7 +76,7 @@ module Babygitter
       #{committer_list} committed to this project since #{@commit_range_beginning}.
       </div>
       <div id="submodules">
-      #{@submodule_list == '' ? '' : "here are the version codes for the submodules in use:<br><br>" + @submodule_list.gsub("\n", '<br>')}
+      #{(@submodule_list.nil? || @submodule_list == '') ? '' : "here are the version codes for the submodules in use:<br><br>" + @submodule_list.gsub("\n", '<br>')}
       </div>
       <div id="babygitter">
       to investigate or add to the code that generated this report, visit <a href="http://github.com/schwabsauce/babygitter">http://github.com/schwabsauce/babygitter</a>.
