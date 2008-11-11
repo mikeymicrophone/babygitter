@@ -5,7 +5,11 @@ a library that helps keep track of which versions of your libraries are deployed
 ===
 usage
 
-[must be in repo root]
+[must be in repo root in order for submodule report]
+
+rake babygitter:report
+
+or
 
 require 'babygitter'
 
@@ -14,6 +18,11 @@ b = Babygitter::ReportGenerator.new
 b.write_report
 
 [report is written to public/babygitter_report.html]
+
+==
+dependencies
+
+grit
 
 ===
 todo
