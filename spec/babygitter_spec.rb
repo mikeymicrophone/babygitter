@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), %w[spec_helper])
 
 describe Babygitter do
   it 'should be able to instantiate a RepoVersionTracker' do
-    Babygitter::RepoVersionTracker.new.should_not be_nil
+    Babygitter::RepoVersionTracker.new(Dir.open('.')).should_not be_nil
   end
   
   it 'should be able to instantiate a ReportGenerator' do
@@ -10,12 +10,17 @@ describe Babygitter do
   end
   
   describe Babygitter::RepoVersionTracker do
+    
+    before do
+      @rvt = Babygitter::RepoVersionTracker.new(Dir.open('.'))
+    end
+    
     it 'should get repo info if called from a repo root' do
-      Babygitter::RepoVersionTracker.new.main_repo_code.should == `git describe --always`
+      @rvt.main_repo_code.should == `git describe --always`.chomp
     end
     
     it 'should get submodule info if submodules exist' do
-      Babygitter::RepoVersionTracker.new.submodule_codes.should == `git submodule`
+      @rvt.submodule_codes.should == `git submodule`
     end
   end
   
@@ -23,18 +28,18 @@ describe Babygitter do
     it 'should populate attributes' do
       r = Babygitter::ReportGenerator.new
       r.submodule_list.should == `git submodule`
-      r.main_repo_code.should == `git describe --always`
+      r.main_repo_code.should == `git describe --always`.chomp
     end
     
     it 'should generate a report with repo codes' do
       r = Babygitter::ReportGenerator.new
-      code = `git describe --always`
+      code = `git describe --always`.chomp
       r.templated_report.=~(/#{code}/).should_not be_nil
     end
     
     it 'should put a timestamp in the report' do
       r = Babygitter::ReportGenerator.new
-      time_without_seconds = Time.now.to_s[/\d+:\d+/]
+      time_without_seconds = Time.now.strftime("%I:%M")
       r.templated_report.=~(/#{time_without_seconds}/).should_not be_nil
     end
     
