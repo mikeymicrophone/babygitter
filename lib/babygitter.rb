@@ -34,7 +34,7 @@ module Babygitter
       self.commit_range_beginning = repo_info.commit_range_beginning
 
       # submodule list not supported when called from an arbitrary dir
-      unless repo_path == '.'
+      unless repo_path != '.'
         self.submodule_list = repo_info.submodule_codes
       end
     end
