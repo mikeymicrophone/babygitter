@@ -70,10 +70,10 @@ module Babygitter
       </div>
       <div id="main_repo">
       the main repository on this server is at version <strong>#{@main_repo_code}</strong>.<br><br>
-      the last time it was deployed was at #{Time.now}
+      the last time it was deployed was at #{Time.now.strftime("%I:%M %p on %A")}
       </div>
       <div id="committers">
-      #{committer_list} committed to this project since #{@commit_range_beginning}.
+      #{committer_list} committed to this project since #{@commit_range_beginning.strftime("%I:%M %p on %A %B %d")}.
       </div>
       <div id="submodules">
       #{(@submodule_list.nil? || @submodule_list == '') ? '' : "here are the version codes for the submodules in use:<br><br>" + @submodule_list.gsub("\n", '<br>')}
