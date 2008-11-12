@@ -33,8 +33,6 @@ todo
 -- not in repo root when run
 -- there is no public folder
 
-* use Grit
-
 * links to github for listed commits
 
 * report how recently each developer’s work has been incorporated
