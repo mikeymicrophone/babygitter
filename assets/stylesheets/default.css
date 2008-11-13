@@ -1,1 +1,12 @@
-* { margin: 0; padding: 0; }
+*{margin:0;padding:0;}
+body{font-family:Arial,helvetica,sans-serif;font-size:62.5%;color:#333;background:#f1f1f1;text-align:center;}
+div#container{border:1px solid #e6e6e6;background:#fff;margin:20px auto;max-width:80em;padding:2em;text-align:left;}
+a{color:#336699;}
+h1{font-size:2.4em;line-height:2.4em;color:#ccc;}
+h2{font-size:2.4em;line-height:2.4em;color:#999;}
+p,ul{font-size:1.4em;line-height:1.8em;margin:0.7em 0;}
+ul{padding-left:2.0em;font-size:1.3em;}
+tt{font-size:1.1em;}
+cite{color:#999;font-style:normal;}
+div#about p{font-size:1.1em;margin-top:1.5em;color:#666;}
+div#about h2{display:none;}

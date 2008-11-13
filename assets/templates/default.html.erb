@@ -15,35 +15,40 @@
 
 	<body>
 
-		<h1>babygitter / Git Repository Report / <%= Time.now.strftime("%b %d %I:%M %p") %></h1>
+		<div id="container">
 
-		<div id="summary">
-			<h2>Summary</h2>
-			<p>The main repository on this server is at version <tt><%= @main_repo_code %></tt></p>
-			<p>It was last deployed <%= Time.now.strftime("%b %d %I:%M %p") %></p>
-		</div>
+			<h1>babygitter / Git Repository Report / <%= Time.now.strftime("%b %d %I:%M %p") %></h1>
 
-		<div id="committers">
-			<h2>Recent commits</h2>
-			<p><%= committer_list %> committed to this project since <%= @commit_range_beginning.strftime("%b %d %I:%M %p") %>.</p>
-			<ul>
-				<%= committer_detail %>
-			</ul>
-		</div>
+			<div id="summary">
+				<h2>Summary</h2>
+				<p>The main repository on this server is at version <tt><%= @main_repo_code %></tt>.
+				It was last deployed <%= Time.now.strftime("%b %d %I:%M %p") %>.</p>
+			</div>
+
+			<div id="committers">
+				<h2>Recent commits</h2>
+				<p><%= committer_list %> committed to this project since <%= @commit_range_beginning.strftime("%b %d %I:%M %p") %>.</p>
+				<ul>
+					<%= committer_detail %>
+				</ul>
+			</div>
 		
-		<% unless submodule_list.nil? %>
-		<div id="submodules">
-			<h2>Submodules</h2>
-			<ul>
-				<%= @submodule_list.split("\n").map { |s| "<li>#{s}</li>" }.join("\n") %>
-			</ul>
-		</div>
-		<% end %>
+			<% unless submodule_list.nil? %>
+			<div id="submodules">
+				<h2>Submodules</h2>
+				<ul>
+					<%= @submodule_list.split("\n").map { |s| "<li><tt>#{s.strip}</tt></li>" }.join("\n") %>
+				</ul>
+			</div>
+			<% end %>
 		
-		<div id="about">
-			<p>
-				babygitter: <a href="http://github.com/schwabsauce/babygitter">http://github.com/schwabsauce/babygitter</a>
-			</p>
+			<div id="about">
+				<h2>About</h2>
+				<p>
+					babygitter: <a href="http://github.com/schwabsauce/babygitter">http://github.com/schwabsauce/babygitter</a>
+				</p>
+			</div>
+		
 		</div>
 
 	</body>

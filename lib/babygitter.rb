@@ -93,10 +93,11 @@ module Babygitter
     
     def committer_detail
       @commits.sort_by { |c| c.author.name }.map do |c|
-        '<li>' + c.author.name + ' committed at ' +
+        '<li>' + c.message + 
+        ' <cite>' + c.author.name + ' ' +
         c.authored_date.strftime("%b %d %I:%M %p") + 
-        ': ' + c.message + '</li>'
-      end.join
+        '</cite></li>'
+      end.join("\n")
     end
     
     def templated_report
