@@ -1,6 +1,7 @@
 require File.join(File.dirname(__FILE__), %w[spec_helper])
 
 describe Babygitter do
+  
   it 'should be able to instantiate a RepoVersionTracker' do
     Babygitter::RepoVersionTracker.new(Dir.open('.')).should_not be_nil
   end
@@ -45,7 +46,10 @@ describe Babygitter do
     
     it 'should write a file' do
       Babygitter::ReportGenerator.new.write_report
-      File.open('public/babygitter_report.html', 'r').should_not be_nil
+      Babygitter.report_file_path = File.join(File.dirname(__FILE__), 'babygitter_report.html')
+      File.open(Babygitter.report_file_path, 'r').should_not be_nil
+      # Cleanup
+      File.unlink(Babygitter.report_file_path)
     end
   end
   

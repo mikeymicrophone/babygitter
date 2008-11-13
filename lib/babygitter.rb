@@ -1,5 +1,15 @@
 require 'grit'
 module Babygitter
+  
+  def self.report_file_path
+    @@report_file_path
+  end
+  def self.report_file_path=(report_file_path)
+    @@report_file_path = report_file_path
+  end
+  
+  self.report_file_path = File.join(File.dirname(__FILE__), '../../../../public/babygitter_report.html')
+  
   class RepoVersionTracker
     
     def initialize(repo)
@@ -45,10 +55,10 @@ module Babygitter
     end
     
     def write_report
-      r = File.open('public/babygitter_report.html', 'w+')
+      r = File.open(Babygitter.report_file_path, 'w+')
       r.write templated_report
       r.close
-      'report written to public/babygitter_report.html'
+      "Report written to #{Babygitter.report_file_path}"
     end
     
     def committer_list

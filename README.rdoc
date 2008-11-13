@@ -1,0 +1,35 @@
+= babygitter
+
+A plugin that provides a report detailing Git information about your
+Rails application, including submodules.
+
+== Installation
+
+Install the grit gem:
+
+	[sudo] gem install grit
+
+Install as a normal plugin: 
+
+	script/plugin install <babygitter url>
+
+== Usage
+
+Generate the report with the provided rake task (from the repo root):
+
+	rake babygitter:report
+
+Or
+
+	require 'babygitter'
+	
+	b = Babygitter::ReportGenerator.new
+	b.write_report
+
+In both cases, the report will be written to <tt>public/babygitter_report.html</tt>
+
+== Customization
+
+To customize the output path, add this to environment.rb:
+
+	Babygitter.report_path = "<your custom path>"
