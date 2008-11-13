@@ -1,14 +1,32 @@
 require 'grit'
 module Babygitter
   
+  # Customizable options
+  
   def self.report_file_path
     @@report_file_path
   end
   def self.report_file_path=(report_file_path)
     @@report_file_path = report_file_path
   end
-  
   self.report_file_path = File.join(File.dirname(__FILE__), '../../../../public/babygitter_report.html')
+  
+  def self.stylesheet
+    @@stylesheet
+  end
+  def self.stylesheet=(stylesheet)
+    @@stylesheet = stylesheet
+  end
+  self.stylesheet = File.join(File.dirname(__FILE__), '../assets/stylesheets/default.css')
+  
+  def self.template
+    @@template
+  end
+  def self.template=(template)
+    @@template = template
+  end
+  self.template = File.join(File.dirname(__FILE__), '../assets/templates/default.html.erb')
+
   
   class RepoVersionTracker
     
@@ -40,7 +58,7 @@ module Babygitter
   class ReportGenerator
     attr_accessor :submodule_list, :main_repo_code, :committers, :commit_range_beginning, :commits
     
-    def initialize(repo_path = '.')
+    def initialize(repo_path = '.')    
       repo = Dir.open repo_path
       repo_info = RepoVersionTracker.new(repo)
       self.main_repo_code = repo_info.main_repo_code
@@ -52,6 +70,9 @@ module Babygitter
       unless repo_path != '.'
         self.submodule_list = repo_info.submodule_codes
       end
+      
+      raise "Could not find stylesheet #{Babygitter.stylesheet}" unless File.exist?(Babygitter.stylesheet)
+      
     end
     
     def write_report
@@ -72,49 +93,21 @@ module Babygitter
     
     def committer_detail
       @commits.sort_by { |c| c.author.name }.map do |c|
-        c.author.name + ' committed at ' + c.authored_date.strftime("%I:%M %p %m/%d") + ': ' + c.message + '<br>'
+        '<li>' + c.author.name + ' committed at ' +
+        c.authored_date.strftime("%b %d %I:%M %p") + 
+        ': ' + c.message + '</li>'
       end.join
     end
     
     def templated_report
-      <<-TEMPLATE
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-      <html>
-      <head>
-        <title>babygitter report on git repositories in use</title>
-      </head>
-      <body>
+      require 'erb'
+      
+      stylesheet = ''
+      File.open(Babygitter.stylesheet, 'r') { |f| stylesheet = f.read }
+      
+      template = File.read(Babygitter.template)
+      result = ERB.new(template).result(binding)
 
-      <div id="main_repo">
-      the main repository on this server is at version <strong>#{@main_repo_code}</strong>.<br><br>
-      the last time it was deployed was at #{Time.now.strftime("%I:%M %p on %A")}
-      </div>
-      <div id="committers">
-      #{committer_list} committed to this project since #{@commit_range_beginning.strftime("%I:%M %p on %A %B %d")}.
-      <hr>
-      #{committer_detail}
-      <hr>
-      </div>
-      <div id="submodules">
-      #{(@submodule_list.nil? || @submodule_list == '') ? '' : "here are the version codes for the submodules in use:<br><br>" + @submodule_list.gsub("\n", '<br>')}
-      </div>
-      <div id="babygitter">
-      to investigate or add to the code that generated this report, visit <a href="http://github.com/schwabsauce/babygitter">http://github.com/schwabsauce/babygitter</a>.
-      </div>
-      <div id="intro">
-      this project is being stored with <a href='http://git.or.cz'>git</a> and hosted on <a href='http://github.com'>github</a>
-      <br><br>
-      git uses alphanumerical codes to name the different versions of each codebase.<br><br>
-      you can use github to look them up <br><br>
-      <tt>http://github.com/<i>username</i>/<i>repository</i>/commit/<i>alphanumerical-code</i><br>
-      http://github.com/schwabsauce/railevant/commit/6daae03</tt><br><br>
-      or plug them into your own copy of the repos to investigate.<br><br>
-      <tt>git checkout <i>alphanumerical-code</i><br>
-      git checkout 8534273</tt>
-      </div>
-      </body>
-      </html>
-      TEMPLATE
     end
   end
 end

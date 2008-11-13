@@ -1,3 +1,4 @@
+* move the template to a file
 * error handling for cases such as:
 ** git is not installed
 ** wrong version of git

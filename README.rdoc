@@ -20,8 +20,6 @@ Generate the report with the provided rake task (from the repo root):
 	rake babygitter:report
 
 Or
-
-	require 'babygitter'
 	
 	b = Babygitter::ReportGenerator.new
 	b.write_report
@@ -30,6 +28,8 @@ In both cases, the report will be written to <tt>public/babygitter_report.html</
 
 == Customization
 
-To customize the output path, add this to environment.rb:
+You can customize the look of the report in environment.rb:
 
-	Babygitter.report_path = "<your custom path>"
+	Babygitter.report_path = "your/custom/report/path"
+	Babygitter.stylesheet = "path/to/your/custom/stylesheet"
+	Babygitter.template = "path/to/your/custom/template"

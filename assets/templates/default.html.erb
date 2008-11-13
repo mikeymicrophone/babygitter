@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+		<title>babygitter / Git Repository Report / <%= Time.now.strftime("%b %d %I:%M %p") %></title>
+	
+		<style>
+			<%= stylesheet %>
+		</style>
+	
+	</head>
+
+	<body>
+
+		<h1>babygitter / Git Repository Report / <%= Time.now.strftime("%b %d %I:%M %p") %></h1>
+
+		<div id="summary">
+			<h2>Summary</h2>
+			<p>The main repository on this server is at version <tt><%= @main_repo_code %></tt></p>
+			<p>It was last deployed <%= Time.now.strftime("%b %d %I:%M %p") %></p>
+		</div>
+
+		<div id="committers">
+			<h2>Recent commits</h2>
+			<p><%= committer_list %> committed to this project since <%= @commit_range_beginning.strftime("%b %d %I:%M %p") %>.</p>
+			<ul>
+				<%= committer_detail %>
+			</ul>
+		</div>
+		
+		<% unless submodule_list.nil? %>
+		<div id="submodules">
+			<h2>Submodules</h2>
+			<ul>
+				<%= @submodule_list.split("\n").map { |s| "<li>#{s}</li>" }.join("\n") %>
+			</ul>
+		</div>
+		<% end %>
+		
+		<div id="about">
+			<p>
+				babygitter: <a href="http://github.com/schwabsauce/babygitter">http://github.com/schwabsauce/babygitter</a>
+			</p>
+		</div>
+
+	</body>
+</html>
