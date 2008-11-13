@@ -45,8 +45,8 @@ describe Babygitter do
     end
     
     it 'should write a file' do
-      Babygitter::ReportGenerator.new.write_report
       Babygitter.report_file_path = File.join(File.dirname(__FILE__), 'babygitter_report.html')
+      Babygitter::ReportGenerator.new.write_report
       File.open(Babygitter.report_file_path, 'r').should_not be_nil
       # Cleanup
       File.unlink(Babygitter.report_file_path)
