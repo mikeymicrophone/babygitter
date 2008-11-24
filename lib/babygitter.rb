@@ -31,11 +31,12 @@ module Babygitter
   class RepoVersionTracker
     
     def initialize(repo)
+      @path = repo.path
       @repo = Grit::Repo.new repo.path
     end
     
     def submodule_codes
-      `git submodule`
+      `cd #{@path}; git submodule`
     end
     
     def main_repo_code
@@ -65,11 +66,7 @@ module Babygitter
       self.committers = repo_info.committers
       self.commit_range_beginning = repo_info.commit_range_beginning
       self.commits = repo_info.commits
-
-      # submodule list not supported when called from an arbitrary dir
-      unless repo_path != '.'
-        self.submodule_list = repo_info.submodule_codes
-      end
+      self.submodule_list = repo_info.submodule_codes
       
       raise "Could not find stylesheet #{Babygitter.stylesheet}" unless File.exist?(Babygitter.stylesheet)
       
