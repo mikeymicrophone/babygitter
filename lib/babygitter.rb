@@ -27,6 +27,21 @@ module Babygitter
   end
   self.template = File.join(File.dirname(__FILE__), '../assets/templates/default.html.erb')
 
+  def self.additional_links
+    @@additional_links
+  end
+  def self.additional_links=(additional_links)
+    @@additional_links = additional_links
+  end
+  self.additional_links = File.join(File.dirname(__FILE__), '../assets/guides/bdd_stack.html.erb')
+  
+  def self.instructions
+    @@instructions
+  end
+  def self.instructions=(instructions)
+    @@instructions = instructions
+  end
+  self.instructions = File.join(File.dirname(__FILE__), '../assets/guides/display_only.html.erb')
   
   class RepoVersionTracker
     
@@ -100,9 +115,14 @@ module Babygitter
     def templated_report
       require 'erb'
       
-      stylesheet = ''
+      stylesheet, additional_links, instructions = '', '', ''
       File.open(Babygitter.stylesheet, 'r') { |f| stylesheet = f.read }
-      
+      Babygitter.additional_links.is_a?(String) ?
+        additional_links = Babygitter.additional_links :
+        File.open(Babygitter.additional_links, 'r') { |f| additional_links = f.read }
+      Babygitter.instructions.is_a?(String) ? 
+        instructions = Babygitter.instructions :
+        File.open(Babygitter.instructions, 'r') { |f| instructions = f.read }
       template = File.read(Babygitter.template)
       result = ERB.new(template).result(binding)
 
