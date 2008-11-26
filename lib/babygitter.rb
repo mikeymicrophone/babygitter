@@ -108,7 +108,7 @@ module Babygitter
         '<li>' + c.message + 
         ' <cite>' + c.author.name + ' ' +
         c.authored_date.strftime("%b %d %I:%M %p") + 
-        '</cite></li>'
+        '</cite> ' + c.id_abbrev + '</li>'
       end.join("\n")
     end
     
