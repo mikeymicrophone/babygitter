@@ -33,10 +33,5 @@ You can customize the look of the report in environment.rb:
 	Babygitter.report_path = "your/custom/report/path"
 	Babygitter.stylesheet = "path/to/your/custom/stylesheet"
 	Babygitter.template = "path/to/your/custom/template"
-	Babygitter.additional_links = <<-LINKS
-	http://rails.lighthouseapp.com/dashboard
-	http://rails.info/guides
-	http://merbivore.com/documentation/1.1.0/doc/rdoc/stack/index.html
-	http://github.com/ezmobius/nanite/tree/master/lib%2Fnanite
-	LINKS
-	Babygitter.instructions = "remember to fetch changes, not pull them"
+	Babygitter.additional_links = "path/to/your/links/file"
+	Babygitter.instructions = "path/to/your/instruction/file"

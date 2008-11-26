@@ -117,12 +117,8 @@ module Babygitter
       
       stylesheet, additional_links, instructions = '', '', ''
       File.open(Babygitter.stylesheet, 'r') { |f| stylesheet = f.read }
-      Babygitter.additional_links.is_a?(String) ?
-        additional_links = Babygitter.additional_links :
-        File.open(Babygitter.additional_links, 'r') { |f| additional_links = f.read }
-      Babygitter.instructions.is_a?(String) ? 
-        instructions = Babygitter.instructions :
-        File.open(Babygitter.instructions, 'r') { |f| instructions = f.read }
+      File.open(Babygitter.additional_links, 'r') { |f| additional_links = f.read }
+      File.open(Babygitter.instructions, 'r') { |f| instructions = f.read }
       template = File.read(Babygitter.template)
       result = ERB.new(template).result(binding)
 
